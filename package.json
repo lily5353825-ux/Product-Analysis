@@ -1,0 +1,13 @@
+{
+  "name": "walmart-sofa-product-analysis",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Walmart sofa dashboard MVP data contract and metric foundation",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

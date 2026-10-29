@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "format": "project_data_contract",
+  "description": "Declarative CSV contract; importer not yet implemented. All fields required unless listed as nullable. See docs/DATA.md for cross-field constraints.",
+  "types": {
+    "id": "Nonempty string; preserve leading zeros",
+    "string": "Nonempty UTF-8 string",
+    "currency": "USD for initial MVP",
+    "date": "Valid calendar date YYYY-MM-DD",
+    "timestamp": "ISO 8601 timestamp with timezone",
+    "boolean": "CSV literal true or false",
+    "positive_integer": "Safe integer >= 1",
+    "nonnegative_integer": "Safe integer >= 0",
+    "cents": "Nonnegative safe integer in minor currency units",
+    "enum": "Allowed CSV literals separated by | after enum:"
+  },
+  "tables": {
+    "products": {
+      "primary_key": [
+        "sku"
+      ],
+      "fields": {
+        "sku": "id",
+        "walmart_item_id": "id",
+        "name": "string",
+        "currency": "currency",
+        "launch_date": "date",
+        "active": "boolean"
+      }
+    },
+    "campaigns": {
+      "primary_key": [
+        "campaign_id"
+      ],
+      "foreign_keys": {
+        "sku": "products.sku"
+      },
+      "fields": {
+        "campaign_id": "id",
+        "sku": "id",
+        "name": "string",
+        "status": "enum:active|paused|ended",
+        "current_daily_budget_cents": "cents",
+        "budget_confirmed_at": "timestamp"
+      },
+      "nullable": [
+        "current_daily_budget_cents",
+        "budget_confirmed_at"
+      ]
+    },
+    "order_lines": {
+      "primary_key": [
+        "order_id",
+        "line_id"
+      ],
+      "foreign_keys": {
+        "sku": "products.sku"
+      },
+      "fields": {
+        "order_id": "id",
+        "line_id": "id",
+        "sku": "id",
+        "ordered_date": "date",
+        "quantity": "positive_integer",
+        "cancelled_quantity": "nonnegative_integer",
+        "item_subtotal_cents": "cents",
+        "discount_cents": "cents",
+        "cancelled_net_cents": "cents",
+        "refund_cents": "cents",
+        "updated_at": "timestamp"
+      }
+    },
+    "daily_plan": {
+      "primary_key": [
+        "date",
+        "sku"
+      ],
+      "foreign_keys": {
+        "sku": "products.sku"
+      },
+      "fields": {
+        "date": "date",
+        "sku": "id",
+        "gmv_target_cents": "cents",
+        "orders_target": "nonnegative_integer",
+        "ad_budget_cents": "cents"
+      }
+    },
+    "ad_daily": {
+      "primary_key": [
+        "date",
+        "campaign_id"
+      ],
+      "foreign_keys": {
+        "campaign_id": "campaigns.campaign_id"
+      },
+      "nullable": [
+        "daily_budget_cap_cents"
+      ],
+      "fields": {
+        "date": "date",
+        "campaign_id": "id",
+        "impressions": "nonnegative_integer",
+        "clicks": "nonnegative_integer",
+        "spend_cents": "cents",
+        "attributed_orders": "nonnegative_integer",
+        "attributed_sales_cents": "cents",
+        "daily_budget_cap_cents": "cents",
+        "report_profile_id": "id",
+        "updated_at": "timestamp"
+      }
+    },
+    "inventory_daily": {
+      "primary_key": [
+        "date",
+        "sku"
+      ],
+      "foreign_keys": {
+        "sku": "products.sku"
+      },
+      "fields": {
+        "date": "date",
+        "sku": "id",
+        "available_units": "nonnegative_integer",
+        "updated_at": "timestamp"
+      }
+    },
+    "action_log": {
+      "primary_key": [
+        "action_id"
+      ],
+      "foreign_keys": {
+        "sku": "products.sku",
+        "campaign_id": "campaigns.campaign_id"
+      },
+      "nullable": [
+        "campaign_id",
+        "previous_daily_budget_cents",
+        "new_daily_budget_cents"
+      ],
+      "fields": {
+        "action_id": "id",
+        "sku": "id",
+        "campaign_id": "id",
+        "action_type": "enum:increase|decrease|adjust|hold",
+        "reason": "string",
+        "previous_daily_budget_cents": "cents",
+        "new_daily_budget_cents": "cents",
+        "executed_at": "timestamp",
+        "operator": "string"
+      }
+    }
+  }
+}

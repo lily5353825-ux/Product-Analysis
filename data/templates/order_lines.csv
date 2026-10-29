@@ -1,0 +1,1 @@
+order_id,line_id,sku,ordered_date,quantity,cancelled_quantity,item_subtotal_cents,discount_cents,cancelled_net_cents,refund_cents,updated_at

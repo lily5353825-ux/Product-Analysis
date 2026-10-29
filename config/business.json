@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "configuration_status": "needs_input",
+  "marketplace": "Walmart US",
+  "currency": "USD",
+  "amount_unit": "cent",
+  "reporting_timezone": null,
+  "campaign_period": {
+    "start_date": null,
+    "end_date": null
+  },
+  "attribution": {
+    "report_profile_id": null,
+    "source": null,
+    "window_days": null,
+    "date_basis": null,
+    "attribution_maturity_days": null,
+    "scope": "direct_product_only"
+  },
+  "products": [
+    {
+      "sku": "SKU_A",
+      "walmart_item_id": null,
+      "name": null,
+      "target_acos": null,
+      "target_tacos": null,
+      "target_cpa_cents": null,
+      "contribution_margin_rate": null,
+      "ctr_floor": null,
+      "cvr_floor": null
+    },
+    {
+      "sku": "SKU_B",
+      "walmart_item_id": null,
+      "name": null,
+      "target_acos": null,
+      "target_tacos": null,
+      "target_cpa_cents": null,
+      "contribution_margin_rate": null,
+      "ctr_floor": null,
+      "cvr_floor": null
+    }
+  ],
+  "automatic_ad_account_changes": false
+}
