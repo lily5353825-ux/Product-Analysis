@@ -1,45 +1,47 @@
 {
-  "version": 1,
-  "configuration_status": "needs_input",
+  "version": 2,
+  "configuration_status": "actuals_ready_rules_pending",
   "marketplace": "Walmart US",
   "currency": "USD",
   "amount_unit": "cent",
   "reporting_timezone": null,
-  "campaign_period": {
-    "start_date": null,
-    "end_date": null
-  },
-  "attribution": {
-    "report_profile_id": null,
-    "source": null,
-    "window_days": null,
-    "date_basis": null,
-    "attribution_maturity_days": null,
-    "scope": "direct_product_only"
-  },
-  "products": [
+  "launch_stage": "new_product",
+  "reported_age_months": 1,
+  "launch_date": null,
+  "product_groups": [
     {
-      "sku": "SKU_A",
-      "walmart_item_id": null,
-      "name": null,
-      "target_acos": null,
-      "target_tacos": null,
-      "target_cpa_cents": null,
-      "contribution_margin_rate": null,
-      "ctr_floor": null,
-      "cvr_floor": null
+      "id": "sofa106",
+      "name": "106英寸组合沙发",
+      "daily_order_target": 2,
+      "gmv_target_cents": null,
+      "ad_budget_cents": null
     },
     {
-      "sku": "SKU_B",
-      "walmart_item_id": null,
-      "name": null,
-      "target_acos": null,
-      "target_tacos": null,
-      "target_cpa_cents": null,
-      "contribution_margin_rate": null,
-      "ctr_floor": null,
-      "cvr_floor": null
+      "id": "sofa79",
+      "name": "79英寸沙发床",
+      "daily_order_target": 2,
+      "gmv_target_cents": null,
+      "ad_budget_cents": null
     }
   ],
-  "automatic_ad_account_changes": false
+  "inventory": {
+    "status": "sufficient",
+    "source": "user_reported",
+    "reported_date": "2026-10-29",
+    "quantity": null
+  },
+  "workbook_order_columns": {
+    "unit_price": "I",
+    "discount": "J",
+    "shipping": "K",
+    "gmv_includes_shipping": false
+  },
+  "attribution": {
+    "window_days": null,
+    "date_basis": null,
+    "maturity_days": null
+  },
+  "budget_recommendations_enabled": false,
+  "automatic_ad_account_changes": false,
+  "note": "Web defaults mirror these settings; this configuration file is implementation documentation, not an automatically fetched runtime source."
 }

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Walmart 新品沙发推广看板：本地导入、订单目标、销售与广告表现。">
+  <title>新品增长看板 · Walmart</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="看板导航"><a class="brand" href="#" aria-label="首页">P<span>·</span></a><a href="#overview" class="rail-link active" title="经营总览" aria-label="经营总览">▦</a><a href="#comparison" class="rail-link" title="产品表现" aria-label="产品表现">▤</a><a href="#advertising" class="rail-link" title="广告明细" aria-label="广告明细">↗</a><div class="rail-bottom">MVP</div></aside>
+    <main>
+      <header class="topbar"><div class="breadcrumb">PRODUCT ANALYSIS <span>/</span> WALMART</div><span class="privacy"><i></i>数据仅在当前浏览器内存处理</span></header>
+      <section class="page-heading" id="overview"><div><p class="eyebrow">新品上市 · 经营工作台</p><h1>Walmart 新品沙发推广看板</h1><p class="subtitle">106 英寸组合沙发与 79 英寸沙发床 · 从销售表现到广告诊断</p></div><div class="heading-actions"><button id="demo-button" class="button secondary">查看演示</button><label for="file-input" class="button primary" tabindex="0" id="upload-label">＋ 导入数据</label><input id="file-input" type="file" accept=".xlsx,.json" hidden></div></section>
+      <div id="feedback" class="notice" role="status" hidden></div>
+      <div id="demo-banner" class="demo-banner" hidden><strong>演示模式</strong><span>当前为合成示例数据，仅用于体验页面，不代表真实经营表现。</span></div>
+      <section class="source-bar"><div><span class="source-dot"></span><strong id="source-name">等待导入经营数据</strong><span id="import-time" class="muted"></span></div><button id="clear-button" class="text-button" disabled>清空数据</button></section>
+      <section id="empty-state" class="empty-state"><div class="empty-illustration" aria-hidden="true"><span class="mini-chart"><i></i><i></i><i></i><i></i><i></i></span><span class="floating-check">✓</span></div><div class="empty-copy"><p class="eyebrow">从一份表格开始</p><h2>导入广告日报，连接销售与广告。</h2><p>支持「广告每日更新.xlsx」及标准 JSON。自动按两类产品汇总所有颜色和左右向变体，排除单独脚凳。</p><div class="steps"><span><b>01</b> 选择本地文件</span><span><b>02</b> 核对数据期间</span><span><b>03</b> 查看订单差距</span></div><p class="privacy-note">文件不会上传至服务器；刷新或关闭页面后，需重新导入。</p></div></section>
+      <section class="filters" aria-label="筛选条件"><div class="filter-field"><label for="start-date">开始日期</label><input type="date" id="start-date" disabled></div><div class="filter-field"><label for="end-date">结束日期</label><input type="date" id="end-date" disabled></div><div class="filter-field filter-wide"><label for="group-filter">产品类别</label><select id="group-filter"><option value="all">全部产品 · 2 类</option><option value="sofa106">106 英寸组合沙发</option><option value="sofa79">79 英寸沙发床</option></select></div><div class="filter-field"><label for="daily-target">每类每日订单目标</label><div class="number-input"><input type="number" id="daily-target" min="0" max="10000" step="1" value="2"><span>单 / 天</span></div></div><div class="filter-summary"><strong id="window-label">先导入数据</strong><span id="target-label">两类各 2 单，合计 4 单 / 天</span></div></section>
+      <div class="coverage-note" id="coverage-note">日期默认使用销售与广告记录的重叠区间。无记录的日期不自动视为零交易。</div>
+      <section class="kpi-grid" id="kpis" aria-label="核心指标"></section>
+      <section class="two-column"><article class="card trend-card"><div class="card-heading"><div><p class="eyebrow">DAILY PERFORMANCE</p><h2>订单趋势</h2></div><div class="legend"><span class="legend-actual">品类订单</span><span class="legend-target">每日目标</span></div></div><div id="trend" class="chart-container"></div><p class="footnote">按各类别去重后合计品类订单；空心点表示当天没有销售记录，记录完整性待确认。</p></article><article class="card goal-card"><div class="card-heading"><div><p class="eyebrow">ORDER GOAL</p><h2>目标完成情况</h2></div><span class="badge">新品期</span></div><div id="goal"></div><div class="goal-settings"><span>GMV 目标 <b>未设置</b></span><span>广告预算 <b>未设置</b></span><span>库存状态 <b class="positive">充足 · 人工确认</b></span></div></article></section>
+      <section class="card" id="comparison"><div class="card-heading"><div><p class="eyebrow">PRODUCT PERFORMANCE</p><h2>两类产品对比</h2></div><span class="muted small">包含所有颜色和左右向变体</span></div><div id="comparison-table" class="table-scroll"></div><p class="footnote">同一订单若包含两类商品，各类分别计 1 单；顶部合计再次去重，因此类别订单数之和可能大于总订单数。GMV 为商品金额扣折扣，不含运费。</p></section>
+      <section class="two-column details-row"><article class="card"><div class="card-heading"><div><p class="eyebrow">NEXT BEST ACTION</p><h2>当前运营建议</h2></div><span class="badge neutral">仅诊断</span></div><div id="suggestions"></div></article><article class="card"><div class="card-heading"><div><p class="eyebrow">DATA QUALITY</p><h2>数据口径与待确认项</h2></div></div><ul id="data-issues" class="issue-list"></ul></article></section>
+      <section class="card" id="advertising"><div class="card-heading"><div><p class="eyebrow">ADVERTISING DETAILS</p><h2>广告活动 × 商品明细</h2></div><span class="muted small">按花费从高到低</span></div><div id="ads-table" class="table-scroll"></div><p class="footnote">ACOS / ROAS 默认使用直接商品归因销售额。总归因销售额另列展示，可能包含其他商品销售；广告归因订单不可与销售订单直接相减计算自然订单。</p></section>
+      <footer><span>Product Analysis <b>·</b> Walmart 新品增长看板</span><span>本地导入 · 人工决策 · 无自动投放操作</span></footer>
+    </main>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

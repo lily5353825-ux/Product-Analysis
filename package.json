@@ -1,13 +1,15 @@
 {
   "name": "walmart-sofa-product-analysis",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Walmart sofa dashboard MVP data contract and metric foundation",
+  "description": "Walmart sofa dashboard with browser-local workbook import",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs"
   }
 }

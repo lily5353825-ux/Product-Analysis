@@ -1,28 +1,38 @@
 # Product-Analysis
 
-Walmart 两款新品沙发推广看板的 MVP 实施基础。
+Walmart 两类新品沙发推广看板。支持浏览器本地导入每日 Excel 工作簿、日期筛选、产品系列对比、每日订单目标、销售走势与广告效果。
 
-## 当前交付
-- [MVP 页面与实施方案](docs/MVP.md)：模块、目标差距、实现顺序与验收标准。
-- [数据字典](docs/DATA.md)、[机器可读字段契约](config/data-contract.json)及 [CSV 空模板](data/templates/)：字段、粒度、导入约束。
-- [指标口径](docs/METRICS.md)及 [可执行计算模块](src/domain/metrics.mjs)。
-- [预算与广告操作规则](docs/RULES.md)及 [规则参数](config/rules.json)。
-- [业务配置](config/business.json)：两款商品、时区、归因口径、目标待补齐；美国站/USD 为待确认初始假设。
-- [部署说明](docs/DEPLOYMENT.md)。
+## 使用
+1. 打开部署后的看板，点击“导入表格”，选择包含“订单”“Item Data”“SKU数据”的 XLSX。
+2. 默认按订单与广告记录日期的重叠区间展示，可更改区间与产品类别。
+3. 每类日订单目标默认为 2 单，合计 4 单；GMV目标与预算未设，不显示虚假的达成率。
 
-**目前完成方案、配置、模板和计算基础；尚未实现可视化页面、CSV 导入器、规则执行引擎或线上部署。** 本仓库不连接 Walmart API，不自动改动广告账户。
+数据仅保存在当前浏览器内存，刷新后需要重新导入。源工作簿和订单不会提交到 GitHub，也不会发送给看板服务器。首次访问可用“演示数据”检查页面。
 
-## 本地验证
-安装 Node.js 22 或更高版本，无第三方依赖：
-```sh
+## 本地运行
+安装 Node.js 22 或更高版本，无第三方运行时依赖：
+
+~~~sh
 node --test
-```
-测试使用合成订单；不代表实际经营结果。
+node scripts/build.mjs
+node scripts/serve.mjs
+~~~
 
-## 启动真实业务前
-1. 填写 config/business.json：真实 Walmart item ID、SKU、报表时区与币种、广告归因来源/窗口/日期基准/成熟延迟。
-2. 在商品配置填写目标 ACOS、目标 TACOS、目标 CPA、毛利率；确认这些值的业务依据。金额统一使用美分。
-3. 按 data/templates 填写每日目标、预算、订单、广告和库存。空白不是零；广告数据不可用时显示“缺数据”。
-4. 确认规则阈值后将 configuration_status 改为 ready；实现导入校验通过后才能生成建议。
+打开 http://127.0.0.1:4173。停止本地服务按 Ctrl+C。也可以使用 npm test、npm run build、npm start。
 
-不要把真实订单、访问密钥或经营报表提交到 Git。仓库内只保留模板及合成测试数据。下一步开发从 docs/MVP.md 的第 2 步开始。
+## 当前范围
+- 106英寸组合沙发、79英寸沙发床，包含全部颜色/左右向；排除单独脚凳。
+- 订单GMV排除运费，单独展示商品销售与广告指标；广告按商品原始粒度聚合。
+- 工作簿中已确认的商品单价 I、折扣 J、运费 K 使用明确映射，避免错位旧表头影响结果。
+- 库存充足为人工确认；归因窗口、报表时区、目标 ACOS 未设置，预算操作仍由人员判断。
+- 首版支持指定工作簿格式和规范化 JSON。CSV 模板是后续标准导入方案，尚未接入页面。
+
+## 文件入口
+- [工作簿映射与业务口径](docs/IMPORT_WORKBOOK.md)
+- [启动与部署说明](docs/DEPLOYMENT.md)
+- [初始页面实施方案](docs/MVP.md)
+- [指标定义](docs/METRICS.md)
+- [未来预算规则](docs/RULES.md)
+- [业务设置](config/business.json)
+
+src/web 是当前可运行页面与导入/汇总逻辑，scripts/build.mjs 生成 dist。tests 仅含合成数据。旧 CSV 数据字典和基础指标模块保留供后续标准化接入，当前行为以工作簿映射文档为准。
