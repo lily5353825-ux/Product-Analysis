@@ -33,6 +33,31 @@ test('efficiency uses direct sales, not halo total, and sales GMV excludes shipp
   assert.equal(m.comparable, true);
 });
 
+test('ad metrics use weighted totals at overall, group, daily and campaign levels with date filtering', () => {
+  const f = fixture();
+  f.ads = [ad('A', 'sofa106', { impressions: 100, clicks: 10, spendCents: 1000, attributedOrders: 2 }), ad('A', 'sofa106', { date: '2026-10-21', impressions: 900, clicks: 30, spendCents: 6000, attributedOrders: 3 }), ad('C', 'sofa79', { impressions: 1000, clicks: 100, spendCents: 3000, attributedOrders: 5 }), ad('A', 'sofa106', { date: '2026-10-22', impressions: 99999, clicks: 9999 })];
+  const d = validateDataset(f), m = computeMetrics(d, { start: '2026-10-20', end: '2026-10-21' });
+  assert.equal(m.impressions, 2000); assert.equal(m.clicks, 140);
+  assert.equal(m.cpc, 10000 / 140); assert.equal(m.ctr, 140 / 2000); assert.equal(m.cvr, 10 / 140);
+  const c = m.comparisons.find(r => r.groupId === 'sofa106');
+  assert.equal(c.cpc, 175); assert.equal(c.ctr, .04); assert.equal(c.cvr, .125);
+  assert.equal(m.campaigns.find(r => r.sku === 'A').cvr, .125);
+  assert.equal(m.series[1].cvr, .1);
+  const filtered = computeMetrics(d, { ...window, groupId: 'sofa106' });
+  assert.equal(filtered.cpc, 100); assert.equal(filtered.ctr, .1); assert.equal(filtered.cvr, .2);
+});
+
+test('ad zero denominators and missing records stay unavailable, real zero conversion remains zero', () => {
+  const f = fixture(); f.ads = [ad('A', 'sofa106', { impressions: 0, clicks: 0, spendCents: 0, attributedOrders: 0 })];
+  let m = computeMetrics(validateDataset(f), window);
+  assert.equal(m.hasAds, true); assert.equal(m.impressions, 0); assert.equal(m.clicks, 0);
+  assert.equal(m.cpc, null); assert.equal(m.ctr, null); assert.equal(m.cvr, null);
+  f.ads[0].impressions = 100; f.ads[0].clicks = 5;
+  m = computeMetrics(validateDataset(f), window); assert.equal(m.cpc, 0); assert.equal(m.cvr, 0);
+  f.ads = []; m = computeMetrics(validateDataset(f), window);
+  assert.equal(m.hasAds, false); assert.equal(m.cpc, null); assert.equal(m.ctr, null); assert.equal(m.cvr, null);
+});
+
 test('cancelled-only dates remain recorded but contribute zero orders, units and GMV', () => {
   const f = fixture(); f.orders = [order('cancelled', 'A', 'sofa106', { status: 'Canceled', gmvCents: 0 })];
   const m = computeMetrics(validateDataset(f), { ...window, groupId: 'sofa106' });

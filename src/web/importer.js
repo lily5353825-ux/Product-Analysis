@@ -254,7 +254,8 @@ function worksheet(doc, strings) {
   return rows;
 }
 
-export async function importWorkbook(file) {
+/** Read selected sheets only; use cached cell values and never execute formulas. */
+export async function readWorkbookTables(file, { sheetNames = REQUIRED_SHEETS, allowSingleSheet = false } = {}) {
   if (!file || typeof file.arrayBuffer !== 'function') fail('请选择 XLSX 文件。');
   if (file.size > 64 * 1024 * 1024) fail('XLSX 文件超过 64 MB，请裁剪后重试。');
   const read = await openZip(await file.arrayBuffer());
@@ -265,9 +266,10 @@ export async function importWorkbook(file) {
   const shared = await read('xl/sharedStrings.xml', true);
   const strings = shared ? elements(xml(shared, 'sharedStrings'), 'si').map(node => elements(node, 't').map(part => part.textContent).join('')) : [];
   const tables = {};
-  for (const sheet of elements(workbook, 'sheet')) {
+  const workbookSheets = elements(workbook, 'sheet');
+  for (const sheet of workbookSheets) {
     const name = text(sheet.getAttribute('name'));
-    if (!REQUIRED_SHEETS.includes(name)) continue;
+    if (!sheetNames.includes(name) && !(allowSingleSheet && workbookSheets.length === 1)) continue;
     if (tables[name]) fail(`重复工作表：${name}`);
     const relation = sheet.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id') || sheet.getAttribute('r:id');
     const target = targets.get(relation);
@@ -276,5 +278,9 @@ export async function importWorkbook(file) {
     if (!/^xl\/worksheets\/[^/]+\.xml$/.test(path)) fail('工作表路径不受支持。');
     tables[name] = worksheet(xml(await read(path), name), strings);
   }
-  return normalizeTables(tables, { sourceName: file.name || '本地工作簿' });
+  return tables;
+}
+
+export async function importWorkbook(file) {
+  return normalizeTables(await readWorkbookTables(file), { sourceName: file.name || '本地工作簿' });
 }

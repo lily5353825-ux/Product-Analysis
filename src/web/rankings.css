@@ -1,0 +1,69 @@
+/* All ranking styles are scoped; the table scrolls without widening the page. */
+#sku-ranking{min-width:0;max-width:100%;overflow:hidden}
+#sku-ranking .rank-heading{align-items:flex-start;margin-bottom:14px;flex-wrap:wrap}
+#sku-ranking .rank-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#sku-ranking .rank-button{font-size:11px;padding:9px 12px;white-space:nowrap}
+#sku-ranking .rank-clear{padding:8px 4px;white-space:nowrap}
+#sku-ranking .rank-intro{font-size:11px;color:#8a93a8;line-height:1.9;margin:0 0 17px}
+#sku-ranking .rank-status{font-size:11px;line-height:1.9;padding:11px 13px;border:1px solid #dedcf5;background:#f5f4ff;color:#69609d;border-radius:8px;margin-bottom:13px;overflow-wrap:anywhere}
+#sku-ranking .rank-status-error{background:#fff3ee;color:#9f5336;border-color:#f2d7c9}
+#sku-ranking .rank-demo-banner{display:flex;align-items:flex-start;gap:12px;background:#fff7e8;border:1px solid #f0e1bb;border-radius:8px;padding:11px 13px;font-size:11px;color:#8c692d;line-height:1.8;margin-bottom:13px}
+#sku-ranking .rank-demo-banner strong{white-space:nowrap}
+#sku-ranking .rank-source{background:#f8f9fc;border:1px solid #edf0f5;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:9px 22px;flex-wrap:wrap;font-size:10px;margin-bottom:17px;line-height:1.8;overflow-wrap:anywhere}
+#sku-ranking .rank-source-name{color:#65718b;font-weight:500;max-width:100%}
+#sku-ranking .rank-source-coverage{color:#8c95aa}
+#sku-ranking .rank-source-time{color:#a0a7b7;margin-left:auto}
+#sku-ranking .rank-filters{display:flex;gap:15px;align-items:flex-end;flex-wrap:wrap}
+#sku-ranking .rank-filter-field{min-width:150px;flex:0 1 210px}
+#sku-ranking .rank-filter-field label{display:block;font-size:10px;color:#8c95aa;margin-bottom:7px}
+#sku-ranking .rank-filter-field select{display:block;width:100%;min-width:0;height:35px;padding:0 9px;border:1px solid #e3e7f0;border-radius:6px;background:#fff;color:#53617c;font:inherit;font-size:11px}
+#sku-ranking .rank-filter-field select:disabled{background:#fafbfc;color:#adb3c2}
+#sku-ranking .rank-record-count{font-size:10px;color:#949caf;margin-left:auto;padding-bottom:10px}
+#sku-ranking .rank-comparison-note{font-size:10px;line-height:1.9;color:#969eb0;margin:12px 0 17px}
+#sku-ranking .rank-table-scroll{width:100%;max-width:100%;min-width:0;overflow:auto;border:1px solid #e9edf5;border-radius:9px;scrollbar-width:thin}
+#sku-ranking .rank-table{width:100%;min-width:940px;font-size:11px;border-collapse:collapse;table-layout:auto}
+#sku-ranking .rank-table th{padding:14px 15px;background:#f8f9fc;white-space:nowrap;color:#8892a8;font-size:10px;text-align:right;border-bottom:1px solid #e9edf5}
+#sku-ranking .rank-table th:first-child,#sku-ranking .rank-table th:nth-child(2),#sku-ranking .rank-table th:last-child{text-align:left}
+#sku-ranking .rank-table td{padding:19px 15px;border-bottom:1px solid #edf0f6;vertical-align:middle}
+#sku-ranking .rank-table tbody tr:last-child td{border-bottom:0}
+#sku-ranking .rank-table tbody tr:hover{background:#fcfcff}
+#sku-ranking .rank-product{display:flex;gap:13px;align-items:center;min-width:265px;max-width:370px;text-align:left}
+#sku-ranking .rank-product-copy{min-width:0;display:flex;flex-direction:column;gap:5px}
+#sku-ranking .rank-product-name{font-size:12px;font-weight:600;color:#475570;white-space:normal;overflow-wrap:anywhere;line-height:1.7;max-width:250px}
+#sku-ranking .rank-product-id{font-size:10px;color:#929cb1;white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+#sku-ranking .rank-previous-date{font-size:9px;color:#aaaec0;white-space:normal;line-height:1.7;margin-top:2px}
+#sku-ranking .rank-category{text-align:left;white-space:normal;min-width:130px;color:#69758e;line-height:1.7;font-size:10px}
+#sku-ranking .rank-product-type{display:block;color:#9ba2b3;margin-top:7px;overflow-wrap:anywhere;font-size:10px;max-width:160px}
+#sku-ranking .rank-value-cell{min-width:90px;text-align:right;font-variant-numeric:tabular-nums}
+#sku-ranking .rank-value{display:block;color:#3d4a65;font-weight:600;font-size:17px;letter-spacing:-.25px}
+#sku-ranking .rank-change{display:block;margin-top:7px;font-size:10px;font-weight:500}
+#sku-ranking .rank-change-up{color:#2c9878}
+#sku-ranking .rank-change-down{color:#c06565}
+#sku-ranking .rank-change-neutral{color:#b1b7c5;font-size:9px;font-weight:400}
+#sku-ranking .rank-table td:last-child{text-align:left;max-width:140px;white-space:normal;overflow-wrap:anywhere}
+#sku-ranking .rank-condition{display:inline-block;border:1px solid #e2e9ee;background:#f6f9fa;color:#7e939c;border-radius:5px;padding:5px 8px;font-size:10px;line-height:1.5}
+#sku-ranking .rank-empty{text-align:center!important;padding:37px 20px!important;white-space:normal!important}
+#sku-ranking .rank-empty strong{display:block;color:#8790a6;font-size:13px;font-weight:500;margin-bottom:10px}
+#sku-ranking .rank-empty>span{display:block;color:#a6adbd;line-height:1.8;font-size:11px}
+#sku-ranking .rank-sofa-placeholder{width:76px;height:74px;flex-shrink:0;position:relative;background:linear-gradient(145deg,#f2f0f9,#f8f7fc);border-radius:8px;border:1px solid #eeebf5;display:flex;align-items:center;justify-content:center}
+#sku-ranking .rank-sofa{width:56px;height:39px;position:relative;display:block;margin-top:-7px}
+#sku-ranking .rank-sofa>span{position:absolute;display:block}
+#sku-ranking .rank-sofa-back{left:7px;right:7px;top:3px;height:22px;background:#c7c0d9;border-radius:5px 5px 1px 1px;box-shadow:inset 0 -1px 0 #b7aecf}
+#sku-ranking .rank-sofa-back:after{content:'';position:absolute;width:1px;top:3px;bottom:2px;left:50%;background:#b5abc9}
+#sku-ranking .rank-sofa-seat{left:5px;right:5px;top:23px;height:9px;background:#b5a8cc;border-radius:2px 2px 3px 3px}
+#sku-ranking .rank-sofa-arm-left,#sku-ranking .rank-sofa-arm-right{width:7px;top:16px;height:17px;background:#bfb3d2;border:1px solid #b4a7c9;border-radius:3px}
+#sku-ranking .rank-sofa-arm-left{left:1px}
+#sku-ranking .rank-sofa-arm-right{right:1px}
+#sku-ranking .rank-sofa-leg-left,#sku-ranking .rank-sofa-leg-right{width:3px;height:4px;background:#a49ab6;top:33px;border-radius:0 0 1px 1px}
+#sku-ranking .rank-sofa-leg-left{left:7px}
+#sku-ranking .rank-sofa-leg-right{right:7px}
+#sku-ranking .rank-placeholder-caption{position:absolute;bottom:7px;left:0;right:0;text-align:center;color:#aba3be;font-size:8px;letter-spacing:1px}
+#sku-ranking .rank-sofa-bed{background:linear-gradient(145deg,#edf3f6,#f7fafb);border-color:#e9f0f3}
+#sku-ranking .rank-sofa-bed .rank-sofa-back{background:#b9cbd5;box-shadow:inset 0 -1px 0 #a6beca}
+#sku-ranking .rank-sofa-bed .rank-sofa-back:after{background:#9bb3c0}
+#sku-ranking .rank-sofa-bed .rank-sofa-seat{background:#a9bfcd}
+#sku-ranking .rank-sofa-bed .rank-sofa-arm-left,#sku-ranking .rank-sofa-bed .rank-sofa-arm-right{background:#b6c9d4;border-color:#a7bfcd}
+#sku-ranking .rank-sofa-bed .rank-placeholder-caption{color:#9aaeb9}
+#sku-ranking .rank-footnote{margin-top:14px}
+@media(max-width:1100px){#sku-ranking .rank-heading{gap:17px}#sku-ranking .rank-actions{justify-content:flex-start}#sku-ranking .rank-source-time{margin-left:0}#sku-ranking .rank-filter-field{flex:1;min-width:150px}}
+@media(max-width:600px){#sku-ranking .rank-actions{width:100%;gap:7px}#sku-ranking .rank-button{font-size:10px;padding:9px 10px}#sku-ranking .rank-filters{gap:12px}#sku-ranking .rank-filter-field{min-width:calc(50% - 6px);flex:1}#sku-ranking .rank-filter-field:last-of-type{max-width:100%}#sku-ranking .rank-record-count{margin-left:0;padding:2px 0 0;font-size:9px}#sku-ranking .rank-source{padding:10px 12px;gap:5px;font-size:9px;flex-direction:column;align-items:flex-start}#sku-ranking .rank-demo-banner{gap:9px;font-size:10px;flex-wrap:wrap}#sku-ranking .rank-intro{font-size:10px}#sku-ranking .rank-comparison-note,#sku-ranking .rank-footnote{font-size:9px}#sku-ranking .rank-table{min-width:900px}#sku-ranking .rank-table td{padding:15px 13px}#sku-ranking .rank-empty{height:135px}}

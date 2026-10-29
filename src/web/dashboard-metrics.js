@@ -106,7 +106,8 @@ export function computeMetrics(data, { start, end, groupId = 'all', dailyTarget 
     const gmv = sum(orderRows, 'gmvCents');
     const spend = sum(adRows, 'spendCents');
     const directSales = sum(adRows, 'directSalesCents');
-    return { orders: new Set(orderRows.map(r => r.orderId)).size, units: sum(orderRows, 'quantity'), gmv, shipping: sum(orderRows, 'shippingCents'), spend, directSales, attributedSales: sum(adRows, 'attributedSalesCents'), attributedOrders: sum(adRows, 'attributedOrders'), clicks: sum(adRows, 'clicks'), impressions: sum(adRows, 'impressions'), acos: divide(spend, directSales), roas: divide(directSales, spend), tacos: divide(spend, gmv), ctr: divide(sum(adRows, 'clicks'), sum(adRows, 'impressions')), cpc: divide(spend, sum(adRows, 'clicks')), hasSales: orderRows.length > 0, hasAds: adRows.length > 0 };
+    const clicks = sum(adRows, 'clicks'), impressions = sum(adRows, 'impressions'), attributedOrders = sum(adRows, 'attributedOrders');
+    return { orders: new Set(orderRows.map(r => r.orderId)).size, units: sum(orderRows, 'quantity'), gmv, shipping: sum(orderRows, 'shippingCents'), spend, directSales, attributedSales: sum(adRows, 'attributedSalesCents'), attributedOrders, clicks, impressions, acos: divide(spend, directSales), roas: divide(directSales, spend), tacos: divide(spend, gmv), ctr: divide(clicks, impressions), cpc: divide(spend, clicks), cvr: divide(attributedOrders, clicks), hasSales: orderRows.length > 0, hasAds: adRows.length > 0 };
   };
   const totals = aggregate(orders, ads);
   const target = days.length * dailyTarget * groups.length;

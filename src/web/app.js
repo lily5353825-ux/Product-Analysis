@@ -1,5 +1,6 @@
 import { importWorkbook } from './importer.js';
 import { GROUPS, validateDataset, defaultWindow, computeMetrics, datesBetween } from './dashboard-metrics.js';
+import { initRankings } from './rank-view.js';
 
 const $ = id => document.getElementById(id);
 const money = cents => cents == null ? '—' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(cents / 100);
@@ -39,6 +40,20 @@ function kpis(metrics) {
     el.append(title, node('div', value, `kpi-value${String(value).length > 12 ? ' small-value' : ''}`), node('div', note, 'kpi-note')); return el;
   }));
 }
+function renderAdKpis(m) {
+  const definitions = [
+    ['广告曝光', m?.hasAds ? number(m.impressions) : '—', '所选期间曝光次数合计'],
+    ['广告点击', m?.hasAds ? number(m.clicks) : '—', '所选期间点击次数合计'],
+    ['平均 CPC', m?.hasAds ? money(m.cpc) : '—', '广告总花费 ÷ 总点击'],
+    ['点击率 · CTR', m?.hasAds ? percent(m.ctr) : '—', '总点击 ÷ 总曝光'],
+    ['转化率 · CVR', m?.hasAds ? percent(m.cvr) : '—', '广告归因订单 ÷ 总点击']
+  ];
+  $('ad-kpis').replaceChildren(...definitions.map(([label, value, note]) => {
+    const el = node('article', null, 'ad-kpi');
+    el.append(node('div', label, 'kpi-label'), node('div', value, 'kpi-value'), node('div', note, 'kpi-note')); return el;
+  }));
+  $('ad-window').textContent = m ? `${$('start-date').value} — ${$('end-date').value} · ${$('group-filter').value === 'all' ? '全部产品' : GROUPS[$('group-filter').value]}` : '随上方日期与产品类别筛选更新';
+}
 function renderGoal(m) {
   const wrap = node('div'), total = node('div', null, 'goal-number');
   total.append(node('strong', m?.hasSalesRecords ? number(m.targetOrderCount) : '—'), node('span', `/ ${m ? number(m.target) : '—'} 单`), node('span', m?.hasSalesRecords ? percent(m.progress) : '—', 'goal-percent'));
@@ -65,7 +80,7 @@ function renderChart(m) {
 }
 function renderTables(m) {
   $('comparison-table').replaceChildren(makeTable(['产品类别', 'GMV', '有效订单', '品类目标 / 差距', '广告花费', '直接 ACOS', '直接 ROAS'], (m?.comparisons ?? []).map(r => [productCell(GROUPS[r.groupId], `${dataset.products.filter(p => p.groupId === r.groupId).length} 个 SKU · 全部变体`), r.hasSalesRecords ? money(r.gmv) : '—', r.hasSalesRecords ? number(r.orders) : '—', `${number(r.target)} / ${r.hasSalesRecords ? (r.orders - r.target >= 0 ? '+' : '') + number(r.orders - r.target) : '待确认'}`, r.hasAds ? money(r.spend) : '—', r.hasAds ? percent(r.acos) : '—', r.hasAds ? multiple(r.roas) : '—'])));
-  $('ads-table').replaceChildren(makeTable(['活动 / 商品', '产品类别', '曝光', '点击', 'CTR', '花费', 'CPC', '归因订单', '直接商品销售额', '总归因销售额', '直接 ACOS', '直接 ROAS'], (m?.campaigns ?? []).map(r => [productCell(r.campaignName || r.campaignId, `${r.sku} · 活动 ${r.campaignId}`), GROUPS[r.groupId], number(r.impressions), number(r.clicks), percent(r.ctr), money(r.spend), money(r.cpc), number(r.attributedOrders), money(r.directSales), money(r.attributedSales), percent(r.acos), multiple(r.roas)])));
+  $('ads-table').replaceChildren(makeTable(['活动 / 商品', '产品类别', '曝光', '点击', '平均 CPC', '点击率 CTR', '转化率 CVR', '花费', '归因订单', '直接商品销售额', '总归因销售额', '直接 ACOS', '直接 ROAS'], (m?.campaigns ?? []).map(r => [productCell(r.campaignName || r.campaignId, `${r.sku} · 活动 ${r.campaignId}`), GROUPS[r.groupId], number(r.impressions), number(r.clicks), money(r.cpc), percent(r.ctr), percent(r.cvr), money(r.spend), number(r.attributedOrders), money(r.directSales), money(r.attributedSales), percent(r.acos), multiple(r.roas)])));
 }
 function renderGuidance(m) {
   const entries = [['先补齐投放决策口径', '尚未设置广告预算、目标 ACOS 与归因窗口。当前只提供诊断，不生成加预算、降预算或暂停广告指令。']];
@@ -94,7 +109,7 @@ function render() {
   $('window-label').textContent = m ? `${m.days} 个自然日 · ${$('group-filter').value === 'all' ? '2 类产品' : '1 类产品'}` : '先导入数据';
   $('target-label').textContent = `每类 ${$('daily-target').value} 单 / 天 · 合计 ${Number($('daily-target').value) * ($('group-filter').value === 'all' ? 2 : 1)} 单 / 天`;
   $('coverage-note').textContent = dataset ? `销售记录：${dataset.coverage.salesStart ?? '暂无'} — ${dataset.coverage.salesEnd ?? '暂无'}；广告记录：${dataset.coverage.adsStart ?? '暂无'} — ${dataset.coverage.adsEnd ?? '暂无'}。选定期间销售有记录 ${m.salesRecordDays} 天，广告有记录 ${m.adRecordDays} 天；记录完整性待确认。` : '日期默认使用销售与广告记录的重叠区间。无记录的日期不自动视为零交易。';
-  kpis(m); renderGoal(m); renderChart(m); renderTables(m); renderGuidance(m);
+  kpis(m); renderAdKpis(m); renderGoal(m); renderChart(m); renderTables(m); renderGuidance(m);
   lastFilters = Object.fromEntries(['start-date', 'end-date', 'group-filter', 'daily-target'].map(id => [id, $(id).value]));
 }
 function acceptDataset(data, demo = false) {
@@ -139,3 +154,4 @@ $('daily-target').addEventListener('input', () => {
 });
 for (const id of ['start-date', 'end-date', 'group-filter', 'daily-target']) $(id).addEventListener('change', () => { try { const target = Number($('daily-target').value); if ($('daily-target').value === '' || !Number.isInteger(target) || target < 0 || target > 10000) throw new Error('每日订单目标须为 0–10,000 之间的整数。'); render(); feedback(''); } catch (error) { if (lastFilters) for (const [key, value] of Object.entries(lastFilters)) $(key).value = value; feedback(`${error.message} 已恢复上次有效的筛选条件。`, true); } });
 render();
+initRankings();
